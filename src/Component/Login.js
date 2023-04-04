@@ -2,6 +2,8 @@ import React,{useState} from 'react'
 import {useDispatch,useSelector} from 'react-redux'
 import {counterAction} from '../store'
 import axios from 'axios';
+import { useNavigate   } from 'react-router-dom';
+import AddRestaunt from './Restaunt/AddRestaunt';
 
 function Login() {
     const dispatch = useDispatch();
@@ -9,6 +11,8 @@ function Login() {
     const userEmail = useSelector(state=>state.loginUser.Email);
     const userPassword = useSelector(state=>state.loginUser.Password);
     const [user,setUser]=useState({}); 
+      const navigate = useNavigate();
+
     const [error,setError]= useState(false);
     const loginUser= ()=>{
         console.log("LOGIN")
@@ -18,8 +22,13 @@ function Login() {
         axios.post('https://localhost:44397/home/login?email=' + userEmail + '&password=' + userPassword)
         //   axios.get('https://localhost:44397/home/user')
         .then(res=>{
-            console.log(res.data+"@@@@@")
+            console.log(JSON.stringify(res.data.userId)+"@@@@@")
+            console.log(JSON.stringify(res.data,null,2)+"@@@@@")
+            
             setCheck(true);
+            //<Navigate  to="/AddRestaurant" />;
+          //  navigate("/AddRestaurant");
+          dispatch(counterAction.setUserId(JSON.stringify(res.data.userId)));
             setUser(res.data);
             
         })
@@ -32,6 +41,8 @@ const logOut =()=>{
 }
   return (
     <div>
+
+    
         <div hidden={check}>
         <label>Email</label>
         <input type ='text' 
@@ -51,7 +62,7 @@ const logOut =()=>{
         </div>
         <div hidden={!check}>
             <div>
-            <h1>Login SuccesFully{JSON.stringify(user,null,2)}</h1>
+                <AddRestaunt/>
             </div>
             <div>
                 <button onClick={logOut}>Logout</button>

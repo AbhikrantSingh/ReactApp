@@ -7,7 +7,8 @@ const loginUser = {
 const user={
     userEmail:"",
     userPassword:"",
-    userName:""
+    userName:"",
+    userId:""
 };
 const counterSlice = createSlice({
     name:'login',
@@ -23,6 +24,11 @@ const counterSlice = createSlice({
             state.Password=action.payload;
             console.log(action.payload);
 
+        },
+        setUserId(state,action)
+        {
+            state.userId = action.payload;
+            console.log(state.userId);
         }
     }
 });
