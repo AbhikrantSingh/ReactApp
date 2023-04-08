@@ -8,8 +8,45 @@ const user={
     userEmail:"",
     userPassword:"",
     userName:"",
-    userId:""
+    userId:"",
+    restauntId:"",
+    menuRestauntId:""
 };
+const order={
+    total:0,
+    restauntId:"",
+    menuId:"",
+    orderDetails:{
+        menuId:"",
+        quantity:0
+    }
+}
+const orderSlice = createSlice({
+    name :'orderDetail',
+    initialState :order,
+    reducers:{
+        setTotal(state,action)
+        {
+            let c = state.total;
+            c=c+action.payload;
+            state.total =c;
+            console.log("Total Order Price : "+action.payload);
+        },
+        setRestauntId(state,action)
+        {
+            state.restauntId = action.payload;
+        },
+        setMenuId(state,action)
+        {
+            state.menuId=action.payload;
+        },
+        setOrderDetails(state,action)
+        {
+            console.log(action.payload.quantity);
+            console.log(action.payload.menuId);
+        }
+    }
+})
 const counterSlice = createSlice({
     name:'login',
     initialState:loginUser,
@@ -29,6 +66,17 @@ const counterSlice = createSlice({
         {
             state.userId = action.payload;
             console.log(state.userId);
+        },
+        setRestauntId(state,action)
+        {
+            state.restauntId = action.payload;
+            console.log(action.payload+"-----------------REDUX");
+        },
+        setmenuRestauntId(state,action)
+        {
+            state.menuRestauntId = action.payload;
+            console.log(action.payload+"-----------------REDUX2222222");
+
         }
     }
 });
@@ -54,10 +102,14 @@ const userSlice = createSlice({
 const store = configureStore({
     reducer:{
         loginUser : counterSlice.reducer,
-        NewUser :userSlice.reducer
+        NewUser :userSlice.reducer,
+        orderD: orderSlice.reducer
+
     }
 })
 
 export const counterAction = counterSlice.actions;
 export const userAction = userSlice.actions;
+export const orderAction = orderSlice.actions;
+
 export default store;

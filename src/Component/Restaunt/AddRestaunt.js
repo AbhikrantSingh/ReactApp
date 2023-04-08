@@ -1,8 +1,10 @@
 import React,{useState} from 'react'
 import {useDispatch,useSelector} from 'react-redux'
 import {counterAction} from '../../store'
-import axios from 'axios';import { Button, Form } from 'react-bootstrap';
+import axios from 'axios';
+import { Button, Form } from 'react-bootstrap';
 import './AddRestaunt.css';
+import { useNavigate  } from "react-router-dom";
 
 function AddRestaunt() {
     const [restauntName,setRestauntName] = useState('');
@@ -10,6 +12,8 @@ function AddRestaunt() {
     const [contact,setContact] = useState('');
     const userId = useSelector(state => state.loginUser.userId);
     const [checkAdd,setCheckAdd] = useState(false);
+    const navigate = useNavigate ();
+
     const handleSubmit =() =>{
         console.log("USERID"+ userId);
         let restaunt ={
@@ -17,20 +21,29 @@ function AddRestaunt() {
             "Email" : email,
             "ContactNumber" : contact
         }
+        
         const sanitizedUserId = userId.replace(/"/g, "");
         console.log("encodedUserId: " +sanitizedUserId);
         axios.post(`https://localhost:44397/restaunt/save/${sanitizedUserId}`, restaunt)
         .then(function (response) {
     console.log(response);
     setCheckAdd(true);
+    navigate('/GetUserRestaunt')
 })
 .catch(function (error) {
     console.log(error);
 });
 
-    }
+}
+const handleCancel = () =>{
+  navigate('/GetUserRestaunt')
+
+}
   return (
       <>
+      <div>
+        <button onClick={handleCancel}> Cancel</button>
+      </div>
     <div className="container" hidden={checkAdd}>
       <h1>Add Restaurant</h1>
       <Form  >

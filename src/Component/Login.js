@@ -11,7 +11,7 @@ function Login() {
     const userEmail = useSelector(state=>state.loginUser.Email);
     const userPassword = useSelector(state=>state.loginUser.Password);
     const [user,setUser]=useState({}); 
-      const navigate = useNavigate();
+    const navigate = useNavigate();
 
     const [error,setError]= useState(false);
     const loginUser= ()=>{
@@ -27,9 +27,19 @@ function Login() {
             
             setCheck(true);
             //<Navigate  to="/AddRestaurant" />;
-          //  navigate("/AddRestaurant");
-          dispatch(counterAction.setUserId(JSON.stringify(res.data.userId)));
+            dispatch(counterAction.setUserId(JSON.stringify(res.data.userId)));
             setUser(res.data);
+
+            if(JSON.stringify(res.data.userType)==0)
+            {
+                navigate("/GetAllRestaunt");
+            }
+            else
+            {
+                navigate("/GetUserRestaunt");
+            }
+            
+          
             
         })
         .catch(err=>{
@@ -61,9 +71,7 @@ const logOut =()=>{
         <button onClick={loginUser}>Login</button>
         </div>
         <div hidden={!check}>
-            <div>
-                <AddRestaunt/>
-            </div>
+            
             <div>
                 <button onClick={logOut}>Logout</button>
             </div>
